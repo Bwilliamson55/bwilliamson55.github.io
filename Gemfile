@@ -7,6 +7,8 @@ group :jekyll_plugins do
   gem "jekyll-paginate"
   gem "jekyll-redirect-from"
   gem "jekyll-seo-tag", "~> 2.6.1"
+  gem 'tzinfo', '1.2.8'
+  gem 'tzinfo-data', '1.2020.4'
 end
 
 group :test do
