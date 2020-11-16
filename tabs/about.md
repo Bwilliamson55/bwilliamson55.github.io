@@ -15,3 +15,5 @@ Generally, this is the ramblings of a do-all sysadmin and aspiring developer, de
 Much of the content found here has just been readapted from my Evernotes.
 
 I've found that teaching is one of the most effective learning tools. I enjoy sharing my experiences and knowhow while serving as a guide for my future self.
+
+.
