@@ -3,9 +3,6 @@ title: About
 icon: fas fa-info
 order: 4
 ---
-
-
-
 # Hi! This is my blog.
 
 ## What?
@@ -28,8 +25,6 @@ I plan to leave notes on a lot of topics I find useful and interesting:
 * ETL and Databases
 * Linux
 * General Sysadmin for small to medium business
-
-
 
 As a secondary objective, this serves as a portfolio.  
 I would encourage any prospective employers or connections to browse this blog and review the types of challenges I encounter, and the solutions I use or create. In my experience, one thing a CV cannot do thoroughly is ***show*** the work.  
