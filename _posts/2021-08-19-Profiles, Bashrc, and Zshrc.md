@@ -3,7 +3,7 @@ title: Profiles, Bashrc, and Zshrc
 date: 2021-08-19 11:29
 categories: [General]
 author: Bwilliamson
-tags: [windows linux osx profiles bashrc zshrc powershell bash]
+tags: [windows, linux, osx, profiles, bashrc, zshrc, powershell, bash]
 ---
 
 # Let's talk about profiles.  
