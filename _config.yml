@@ -23,9 +23,9 @@ title: Bwilliamson's Blog                          # the main title
 tagline: More Dude, less Walter   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Ramblings of a developer/sysadmin in blog form
-  notes and tutorials for reference
-  projects for fun and growth
+  Ramblings of a developer/sysadmin in blog form.
+  Notes and tutorials for reference,
+  Projects for fun and growth.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://bwilliamson55.github.io'
