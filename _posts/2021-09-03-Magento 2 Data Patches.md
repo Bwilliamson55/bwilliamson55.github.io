@@ -8,11 +8,11 @@ tags: [magento, data patches]
 
 ***Data Patches; They're awesome.***
 
-Before 2.3, Magento used Install and Upgrade scripts to modify your schema, and other things. This has been deprecated in favor of a much easier (I think) declaration schema. This new mess of stuff is outlined here. This is closely related, but not the topic at hand. It's worth mentioning, because of the mountain of old information out there using the pre-2.3 methods, which can be terminologically confusing with more current methods. 
+Before 2.3, Magento used Install and Upgrade scripts to modify your schema, and other things. This has been deprecated in favor of a much easier (I think) declaration schema. This new mess of stuff is [outlined here](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/migration-commands.html). This is closely related, but not the topic at hand. It's worth mentioning, because of the mountain of old information out there using the pre-2.3 methods, which can be terminologically confusing with more current methods. 
 
 Basically, if you find information telling you to use an `InstallData.php` file- it's out of date. 
 
-At the time of this writing, the current method is outlined here in the dev docs. In this post, we're focused on data patches, not schema patches.
+At the time of this writing, the current method is [outlined here in the dev docs](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/data-patches.html). In this post, we're focused on data patches, not schema patches.
 
 # How it works
 
