@@ -96,21 +96,125 @@ If the number it returns is **higher** than the version in the modules **`module
 The wonderful thing about patches is they're simple. It's a single file, that's run once. We really don't have many limitations on what we can do with this.  
 Everyone loves examples. Especially future me - copy paste ftw. 
 
-This section needs some work- but we have good examples I'll be posting here soon.
+This section needs some work- but as we get more examples they will be posted.  
+I have a repository with the full example [files here.](https://github.com/Bwilliamson55/PatchExamples)
 
-## Attributes
-### Product
-### Category
-### Address
-### Order
-### Customer
+-----
+
+## Attributes  
+
+Almost all the attribute types will work the same way when creating/updating/removing them. In this case we're talking about [EAV attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#custom), **not** [extension attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#extension).  
+
+The classes to inject are `Magento\Eav\Setup\EavSetupFactory` and `Magento\Framework\Setup\ModuleDataSetupInterface`. Then initialize the setup with 
+```php
+$eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);  
+```  
+Each attribute type has a different set of allowed data (Its fields), so check the devdocs if those fields aren't covered here.  
+
+Create/Update with the following methods, the `self::blabla` is just an example. You can hardcode these values if you wish.
+
+```php
+$eavSetup->addAttribute(
+    self::ENTITY_TYPE_ID, // Text type id like catalog_product
+    self::ATTRIBUTE_CODE, // Text code like 'my_attribute'
+    self::ATTRIBUTE_DATA  // Array of key-value pairs for attribute fields+values
+);
+// to update:
+$eavSetup->updateAttribute(
+    self::ENTITY_TYPE_ID, 
+    self::ATTRIBUTE_CODE, 
+    self::ATTRIBUTE_DATA  
+);
+```
+I have a gist for entity type IDs and where they are declared [here.](https://gist.github.com/Bwilliamson55/748de11b959afc09322b332a2ae807c5)
+
+----
+## CMS blocks and pages
+See the examples in the [repository](https://github.com/Bwilliamson55/PatchExamples) for a full example.  
+
+Pages and Blocks work a little differently from each other. In both cases though, I find it easiest to build your CMS data by hand, then go pull the value of the column `content` from the `cms_block` or `cms_page` tables.  
+
+**Blocks** will accept 
+```php
+[
+    'title' => 'CMS block title 2',
+    'identifier' => 'example-block-2',
+    'content' => 'This would be content directly from the cms_block tables content field',
+    'is_active' => 1,
+    'stores' => [], //the stores this is available to- 0 for default/admin/all
+    'sort_order' => 0
+]
+```
+Inject `Magento\Cms\Model\BlockFactory` and save the block with  
+```php
+$this->blockFactory->create()->setData($blockData)->save(); // $blockData is the array above
+```
+
+For **Pages** - they will accept
+```php
+            [
+                'title' => 'Example cms page 1',
+                'page_layout' => 'cms-full-width',
+                'meta_keywords' => '',
+                'meta_description' => 'lorem',
+                'identifier' => 'example-page-1-slug',
+                'content_heading' => '',
+                'content' => 'This would be content directly from the cms_page tables content field',
+                'layout_update_xml' => '',
+                'url_key' => 'example-page-1',
+                'is_active' => 1,
+                'stores' => [],  //the stores this is available to- 0 for default/admin/all
+                'sort_order' => 0,
+                'meta_title' => 'lorem'
+            ]
+```
+Inject `Magento\Cms\Model\PageFactory` and save the page with
+```php
+$this->pageFactory->create()->setData($pageData)->save(); // $pageData is the array above
+```
 ---
-## CMS blocks
-## CMS pages
 ## Admin configurations
-### Theme config/creation
+This is easier than most - inject `Magento\Framework\App\Config\Storage\WriterInterface` and store your config settings like so  
+```php
+$this->configWriter->save(
+    $path, // such as web/secure/base_url
+    $value, // such as 'https://magento-2.test/'
+    self::CONFIG_SCOPE_TYPE, // such as 'websites' or 'stores' or 'default'
+    self::CONFIG_SCOPE_ID // The ID related to the scope - website ID or store ID or 0 for default
+);
+```
+I find this easiest to pull these values right from the DB after I've clicked my way to the config I want. You can sort the `core_config_data` table by its `updated_at` column and presto.   
+
+The only gotcha here is when your IDs change across environments. In that case I hope your text codes are consistent so you can retreive your IDs via the code before saving this. 
+
+----
+## Theme config/assignment
+Once you have your theme files in place, you can update its configuration with a patch  
+
+Inject `Magento\Theme\Model\Data\Design\ConfigFactory` and `Magento\Theme\Model\DesignConfigRepository`. If you already know your Theme ID great, otherwise inject `Magento\Theme\Model\ResourceModel\Theme\CollectionFactory` too.   
+
+Build the config, then save it:  
+```php
+// Get the theme ID
+$themeCollection = $this->themeCollectionFactory->create();
+    $theme = $themeCollection->getThemeByFullPath('frontend/MyVendorName/MyThemeName');
+    $themeId = $theme->getId();
+// Put the ID in an array, as the minimum.
+$data = [
+    'theme_theme_id' => $themeId
+];
+//Save the configuration to the theme - in this case we're setting its scope and assigned website
+$designConfigData = $this->themeConfigFactory->create(
+    self::CONFIG_SCOPE_TYPE, // can be 'websites', 'stores', 'default'
+    $websiteId, // ID of the scope type- so, websiteId or storeId or 0
+    $data 
+);
+$this->designConfigRepository->save($designConfigData);
+```
 ---
+
 ## Create stuff
+TBD
 ### Product
 ### Customer
 ### Category
