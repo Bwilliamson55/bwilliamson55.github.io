@@ -1,7 +1,7 @@
 ---
 title: Magento 2 Data Patches
 date: 2021-09-03 10:19
-categories: [Magento]
+categories: [Magento, Dev]
 author: Bwilliamson
 tags: [magento, data patches]
 ---
