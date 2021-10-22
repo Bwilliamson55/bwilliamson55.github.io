@@ -126,7 +126,81 @@ $eavSetup->updateAttribute(
     self::ATTRIBUTE_DATA  
 );
 ```
-I have a gist for entity type IDs and where they are declared [here.](https://gist.github.com/Bwilliamson55/748de11b959afc09322b332a2ae807c5)
+I have a gist for entity type IDs and where they are declared [here.](https://gist.github.com/Bwilliamson55/748de11b959afc09322b332a2ae807c5)  
+
+### Customer Attributes
+
+I have recently added Customer attribute examples to the example repository linked above (~11/21). There are some gotchas worth noting:  
+> If your customer attribute is not saving/persisting data on the customer object- be sure it has an `attribute_set_id`, and `attribute_group_id`. In addition, these need to be added to the attribute- NOT during creation.  
+
+*Excerpt from customer attribute patches*
+~~~ php
+...
+$customerEntity = $this->eavConfig->getEntityType('customer');
+$attributeSetId = $customerEntity->getDefaultAttributeSetId();
+
+$attributeSet = $this->attributeSetFactory->create();
+$attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+...
+$attribute = $this->customerSetup->getEavConfig()
+    ->getAttribute(Customer::ENTITY, self::ATTRIBUTE_CODE);
+if ($attribute) {
+    $attribute->setData('used_in_forms', [
+        'adminhtml_checkout',
+        'adminhtml_customer',
+        'customer_account_edit',
+        'customer_account_create'
+    ]);
+    $attribute->setData('attribute_set_id', $attributeSetId);
+    $attribute->setData('attribute_group_id', $attributeGroupId);
+    $this->attributeResource->save($attribute);
+}
+...
+~~~
+
+> Why are we using `CustomerSetup`? It just extends `EavSetup`..
+Yep - but that's how the docs have it, and it has a neat extra function called `updateAttributes` which we are ironically not even using in our examples XD 
+
+### Select, Multiselect
+
+Here's the TLDR on how to do select/multiselect from a patch:  
+- 'input' will be `select`/`multiselect`, and 'type' can be anything, but I generally use `text` - `int` works in many cases as well.  
+- 'source' will be `Magento\Eav\Model\Entity\Attribute\Source\Table` unless you have a source class.  
+- For multiselect- 'backend' will be `Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend` unless you have special requirements there
+- 'user_defined' should be `true` and 'system' should be `false` if you want to be able to change/delete the attribute and it's values from the admin
+- Option values for each are written the same way
+  - For Simple arrays:
+  - ~~~php 
+    'option' => [ 'values' =>
+        [
+        'Option 1',
+        'Option 2',
+        'Option C'
+        ]
+    ],
+    ~~~
+  - For Scoped (per store view) arrays: ***notice values is now value***
+  - ~~~php 
+    'option' => [ 'value' =>
+        [
+            'option1'=>[
+                0=>'Bla bla!',    // 0 is store id
+                1=>'I am store id 1!',
+                13=>'I am store id 13!'
+            ],
+            'option2'=>[
+                0=>'Bla bla! 2!',    // 0 is store id
+                1=>'I am store id 1! 2!',
+                13=>'I am store id 13! 2!'
+            ],
+        ],
+        'order'=> //Sort Order
+        [
+            'option1'=>1,
+            'option2'=>2
+        ]
+    ],
+    ~~~
 
 ----
 ## CMS blocks and pages
@@ -152,21 +226,21 @@ $this->blockFactory->create()->setData($blockData)->save(); // $blockData is the
 
 For **Pages** - they will accept
 ```php
-            [
-                'title' => 'Example cms page 1',
-                'page_layout' => 'cms-full-width',
-                'meta_keywords' => '',
-                'meta_description' => 'lorem',
-                'identifier' => 'example-page-1-slug',
-                'content_heading' => '',
-                'content' => 'This would be content directly from the cms_page tables content field',
-                'layout_update_xml' => '',
-                'url_key' => 'example-page-1',
-                'is_active' => 1,
-                'stores' => [],  //the stores this is available to- 0 for default/admin/all
-                'sort_order' => 0,
-                'meta_title' => 'lorem'
-            ]
+[
+    'title' => 'Example cms page 1',
+    'page_layout' => 'cms-full-width',
+    'meta_keywords' => '',
+    'meta_description' => 'lorem',
+    'identifier' => 'example-page-1-slug',
+    'content_heading' => '',
+    'content' => 'This would be content directly from the cms_page tables content field',
+    'layout_update_xml' => '',
+    'url_key' => 'example-page-1',
+    'is_active' => 1,
+    'stores' => [],  //the stores this is available to- 0 for default/admin/all
+    'sort_order' => 0,
+    'meta_title' => 'lorem'
+]
 ```
 Inject `Magento\Cms\Model\PageFactory` and save the page with
 ```php
@@ -183,7 +257,7 @@ $this->configWriter->save(
     self::CONFIG_SCOPE_ID // The ID related to the scope - website ID or store ID or 0 for default
 );
 ```
-I find this easiest to pull these values right from the DB after I've clicked my way to the config I want. You can sort the `core_config_data` table by its `updated_at` column and presto.   
+I find this easiest to pull these values right from the DB after I've clicked my way to the config I want. You can sort the `core_config_data` table by its `updated_at` column, or `id` desc and presto.   
 
 The only gotcha here is when your IDs change across environments. In that case I hope your text codes are consistent so you can retreive your IDs via the code before saving this. 
 

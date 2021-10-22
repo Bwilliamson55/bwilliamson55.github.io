@@ -113,8 +113,9 @@ Installing Xdebug is pretty trivial. There are a few requirements though:
 ~~~bash
 pecl install xdebug
 ~~~
-Ignore/skip any prompts to mess with `php.ini` 
-Run `php -v` to confirm Xdebug is installed. 
+Run `php -v` to confirm Xdebug is installed.   
+
+> ***Note:*** I have seen OSX with Homebrew throw an error here about directories not existing when installing this way. If this happens to you, simply create those directories and try again. Normally it's due to a symlink being expanded incorrectly - e.g. `/usr/local/Cellar/php@7.4/7.4.20/pecl/` is actually a symlink. 
 
 ## Linux
 
@@ -250,7 +251,7 @@ Your step options are
 
 > Don't forget about `Run->Break at first line in PHP scripts`. 
 > This option will help when you can't find the correct files to set break points on. 
-> It may take you a while to get where you want to be, but you can follow the execution from go.
+<!-- > It may take you a while to get where you want to be, but you can follow the execution from go. -->
 
 ![10](/assets/img/post images/magento/xdebug/10.png){: .normal }
 
