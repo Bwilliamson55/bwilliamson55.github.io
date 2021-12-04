@@ -131,7 +131,7 @@ I have a gist for entity type IDs and where they are declared [here.](https://gi
 ### Customer Attributes
 
 I have recently added Customer attribute examples to the example repository linked above (~11/21). There are some gotchas worth noting:  
-> If your customer attribute is not saving/persisting data on the customer object- be sure it has an `attribute_set_id`, and `attribute_group_id`. In addition, these need to be added to the attribute- NOT during creation.  
+> If your customer attribute is not saving/persisting data on the customer object- be sure it has an `attribute_set_id`, and `default_group_id`. In addition, these need to be added to the attribute- NOT during creation.  
 
 *Excerpt from customer attribute patches*
 ~~~ php
@@ -287,9 +287,3 @@ $this->designConfigRepository->save($designConfigData);
 ```
 ---
 
-## Create stuff
-TBD
-### Product
-### Customer
-### Category
-### Website/Store/StoreView
