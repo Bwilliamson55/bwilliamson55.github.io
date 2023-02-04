@@ -2,7 +2,7 @@
 title: Extract Exchange message tracking logs with powershell
 date: 2021-08-22 19:17
 categories: [Sysadmin, Powershell]
-author: Bwilliamson
+author: bwilliamson
 tags: [powershell, sysadmin, etl, exchange, csv]
 ---
 
@@ -117,11 +117,11 @@ Depending on the exchange server size this log can get heavy. Keep that in mind 
 
 # Automate it
 
-The easiest way to automate this script will be with Windows Task Scheduler. 
+The easiest way to automate this script will be with Windows Task Scheduler.
 
 The screenshots are mostly self explanatory:
 1. Create the task, name it, configure the security options
-     1. The user is not of great importance in this case as our script has built in credentials. 
+     1. The user is not of great importance in this case as our script has built in credentials.
 2. Under the Triggers tab- set your schedule per your script (Daily monthly etc)
 3. The Actions tab - Start a program, script location, and arguments (Details after the screen shots)
 
@@ -134,12 +134,12 @@ The screenshots are mostly self explanatory:
 ![Task Actions](/assets/img/post images/sysadmin/Exchange tracking log task/03.png){: .normal }
 03
 
-The action part of the task is always tricky with powershell.  
-For this example, even though it may not be best practice, we are using bypass.  
+The action part of the task is always tricky with powershell.
+For this example, even though it may not be best practice, we are using bypass.
 
 So run the program script field:
 
-`C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`  
+`C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`
 
 Arguments field:
 
@@ -147,8 +147,8 @@ Arguments field:
 
 # Conclusion
 
-Not that difficult right? Just wait until you want to parse the data..  
+Not that difficult right? Just wait until you want to parse the data..
 
 I highly recommend reading the MS docs on the tracking log, specifically interacting through powershell, and play around with the different results you can generate.
 
-I will be cross-linking this post to my post about dumping this data into mysql, once I work up that post. 
+I will be cross-linking this post to my post about dumping this data into mysql, once I work up that post.

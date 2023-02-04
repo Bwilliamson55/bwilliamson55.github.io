@@ -2,7 +2,7 @@
 title: Installing a Godaddy SSL certificate on Exchange 2013
 date: 2021-08-20 11:18
 categories: [Sysadmin]
-author: Bwilliamson
+author: bwilliamson
 tags: [powershell, sysadmin, exchange, ssl, windows server]
 ---
 
@@ -12,7 +12,7 @@ In this situation we are assuming the Exchange server is a lonely on prem server
 
 ## Get your cert
 
-As of this writing (Way before I'm posting this) the way to get your cert is to go here:  
+As of this writing (Way before I'm posting this) the way to get your cert is to go here:
 
 [https://certs.godaddy.com/cert](https://certs.godaddy.com/cert)
 
@@ -20,7 +20,7 @@ As of this writing (Way before I'm posting this) the way to get your cert is to 
 * Check the expiration date and be sure it's valid
 * Select '**exchange**' as the download type
   * ![Certificate Download](/assets/img/post images/sysadmin/Exchange 2013 SSL/01.png){: .normal }
-  * Once downloaded, extract the zip- and rename the '.crt' file to 'yourFQDN.crt' This is not essential, but good practice. e.g. mail.mydomain.com.crt  
+  * Once downloaded, extract the zip- and rename the '.crt' file to 'yourFQDN.crt' This is not essential, but good practice. e.g. mail.mydomain.com.crt
   * Move that file and the .p7b (Intermediate) file to somewhere the exchange server can reach them.
 
 ## On the Exchange server:
@@ -52,7 +52,7 @@ _In our case, we must provide a key._
   * ![Cert key decrypt](/assets/img/post images/sysadmin/Exchange 2013 SSL/07.png){: .normal }
 * Refresh the MMC, and make sure the little key symbol is on the cert file.
   * ![Key symbol](/assets/img/post images/sysadmin/Exchange 2013 SSL/08.png){: .normal }
-* A good practice is to check the 'friendly name' column in the mmc. If that's empty, right click on the cert file -> Properties. Enter a friendly name. 'yourDomain' should be fine. e.g. mail.yourdomain.com, keep it consistent with previous steps.  
+* A good practice is to check the 'friendly name' column in the mmc. If that's empty, right click on the cert file -> Properties. Enter a friendly name. 'yourDomain' should be fine. e.g. mail.yourdomain.com, keep it consistent with previous steps.
 
 ## Add your certificate to Exchange
 
@@ -69,11 +69,11 @@ _In our case, we must provide a key._
 * Click Save.
 * If you have webmail enabled, visit the URL for your webmail on this server. The certificate in the browser will show you if it's taken the new cert. Otherwise, use an SSL checker tool like Godaddy's: [Certificate Checker](https://ssltools.godaddy.com/views/certChecker)
 
---- 
+---
 
-If you want more detailed information on the whole process, Godaddy does have articles on this.  
+If you want more detailed information on the whole process, Godaddy does have articles on this.
 
-The articles from Godaddy on this are mostly right. If you're starting from scratch and need a CSR as well, do read their article and it's previous articles on that:  
+The articles from Godaddy on this are mostly right. If you're starting from scratch and need a CSR as well, do read their article and it's previous articles on that:
 [https://www.godaddy.com/help/exchange-server-2013-install-a-certificate-4774](https://www.godaddy.com/help/exchange-server-2013-install-a-certificate-4774)
 
 

@@ -2,15 +2,15 @@
 title: Magento 2 Data Patches
 date: 2021-09-03 10:19
 categories: [Magento, Dev]
-author: Bwilliamson
+author: bwilliamson
 tags: [magento, data patches]
 ---
 
 ***Data Patches; They're awesome.***
 
-Before 2.3, Magento used Install and Upgrade scripts to modify your schema, and other things. This has been deprecated in favor of a much easier (I think) declaration schema. This new mess of stuff is [outlined here](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/migration-commands.html). This is closely related, but not the topic at hand. It's worth mentioning, because of the mountain of old information out there using the pre-2.3 methods, which can be terminologically confusing with more current methods. 
+Before 2.3, Magento used Install and Upgrade scripts to modify your schema, and other things. This has been deprecated in favor of a much easier (I think) declaration schema. This new mess of stuff is [outlined here](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/migration-commands.html). This is closely related, but not the topic at hand. It's worth mentioning, because of the mountain of old information out there using the pre-2.3 methods, which can be terminologically confusing with more current methods.
 
-Basically, if you find information telling you to use an `InstallData.php` file- it's out of date. 
+Basically, if you find information telling you to use an `InstallData.php` file- it's out of date.
 
 At the time of this writing, the current method is [outlined here in the dev docs](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/data-patches.html). In this post, we're focused on data patches, not schema patches.
 
@@ -27,19 +27,19 @@ At the time of this writing, the current method is [outlined here in the dev doc
 
 * For a data patch you must implement `Magento\Framework\Setup\Patch\DataPatchInterface`
 * Due to the interface, we must define the following three methods
-  
+
 ---
 ---
 
-## apply(), getDependencies() and getAliases()  
-  
+## apply(), getDependencies() and getAliases()
 
-### apply()  
-is the meat and potatoes. The stuff in here runs when the patch executes. 
+
+### apply()
+is the meat and potatoes. The stuff in here runs when the patch executes.
 
 ### getDependencies()
 is where we define any other patches we want to run before this one.
-e.g.   
+e.g.
 ```php
 public static function getDependencies(){
     return [
@@ -48,17 +48,17 @@ public static function getDependencies(){
 ```
 
 ### getAliases()
-is where we define other names for this patch. The only use case I know of, is if you change the module name - so technically the path of the patch changes, and triggers a new patch install. This function gives us a way to avoid that. I have never used this but it must be defined. 
+is where we define other names for this patch. The only use case I know of, is if you change the module name - so technically the path of the patch changes, and triggers a new patch install. This function gives us a way to avoid that. I have never used this but it must be defined.
 
 ## Revert
-The devdocs are confusing on this subject. So I'll try to clarify; You can revert patches.  
-The problem is, you can't revert a ***single, specific patch*** **among other patches in the same module**.   
+The devdocs are confusing on this subject. So I'll try to clarify; You can revert patches.
+The problem is, you can't revert a ***single, specific patch*** **among other patches in the same module**.
 
-This:  
+This:
 ```bash
 bin/magento module:uninstall --non-composer Vendor_ModuleName
 ```
-will run the `revert()` method in **every** patch file in the named module.  
+will run the `revert()` method in **every** patch file in the named module.
 
 There's no magic here, you need to define your own uninstall steps in the `revert()` method:
 ```php
@@ -76,9 +76,9 @@ There's no magic here, you need to define your own uninstall steps in the `rever
 ```
 
 
-## Re-run and versioning  
+## Re-run and versioning
 
-If you want to re-run the patch, you can delete the corresponding row in your `patch_list` table.  
+If you want to re-run the patch, you can delete the corresponding row in your `patch_list` table.
 This is acceptable in dev, but there's a cleaner way to re-run patches in the case of a new patch version.
 
 In addition to `Magento\Framework\Setup\Patch\DataPatchInterface` implement `Magento\Framework\Setup\Patch\PatchVersionInterface` as well.
@@ -93,23 +93,23 @@ If the number it returns is **higher** than the version in the modules **`module
 
 # Examples
 
-The wonderful thing about patches is they're simple. It's a single file, that's run once. We really don't have many limitations on what we can do with this.  
-Everyone loves examples. Especially future me - copy paste ftw. 
+The wonderful thing about patches is they're simple. It's a single file, that's run once. We really don't have many limitations on what we can do with this.
+Everyone loves examples. Especially future me - copy paste ftw.
 
-This section needs some work- but as we get more examples they will be posted.  
+This section needs some work- but as we get more examples they will be posted.
 I have a repository with the full example [files here.](https://github.com/Bwilliamson55/PatchExamples)
 
 -----
 
-## Attributes  
+## Attributes
 
-Almost all the attribute types will work the same way when creating/updating/removing them. In this case we're talking about [EAV attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#custom), **not** [extension attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#extension).  
+Almost all the attribute types will work the same way when creating/updating/removing them. In this case we're talking about [EAV attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#custom), **not** [extension attributes](https://devdocs.magento.com/guides/v2.4/extension-dev-guide/attributes.html#extension).
 
-The classes to inject are `Magento\Eav\Setup\EavSetupFactory` and `Magento\Framework\Setup\ModuleDataSetupInterface`. Then initialize the setup with 
+The classes to inject are `Magento\Eav\Setup\EavSetupFactory` and `Magento\Framework\Setup\ModuleDataSetupInterface`. Then initialize the setup with
 ```php
-$eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);  
-```  
-Each attribute type has a different set of allowed data (Its fields), so check the devdocs if those fields aren't covered here.  
+$eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
+```
+Each attribute type has a different set of allowed data (Its fields), so check the devdocs if those fields aren't covered here.
 
 Create/Update with the following methods, the `self::blabla` is just an example. You can hardcode these values if you wish.
 
@@ -121,17 +121,17 @@ $eavSetup->addAttribute(
 );
 // to update:
 $eavSetup->updateAttribute(
-    self::ENTITY_TYPE_ID, 
-    self::ATTRIBUTE_CODE, 
-    self::ATTRIBUTE_DATA  
+    self::ENTITY_TYPE_ID,
+    self::ATTRIBUTE_CODE,
+    self::ATTRIBUTE_DATA
 );
 ```
-I have a gist for entity type IDs and where they are declared [here.](https://gist.github.com/Bwilliamson55/748de11b959afc09322b332a2ae807c5)  
+I have a gist for entity type IDs and where they are declared [here.](https://gist.github.com/Bwilliamson55/748de11b959afc09322b332a2ae807c5)
 
 ### Customer Attributes
 
-I have recently added Customer attribute examples to the example repository linked above (~11/21). There are some gotchas worth noting:  
-> If your customer attribute is not saving/persisting data on the customer object- be sure it has an `attribute_set_id`, and `default_group_id`. In addition, these need to be added to the attribute- NOT during creation.  
+I have recently added Customer attribute examples to the example repository linked above (~11/21). There are some gotchas worth noting:
+> If your customer attribute is not saving/persisting data on the customer object- be sure it has an `attribute_set_id`, and `default_group_id`. In addition, these need to be added to the attribute- NOT during creation.
 
 *Excerpt from customer attribute patches*
 ~~~ php
@@ -159,18 +159,18 @@ if ($attribute) {
 ~~~
 
 > Why are we using `CustomerSetup`? It just extends `EavSetup`..
-Yep - but that's how the docs have it, and it has a neat extra function called `updateAttributes` which we are ironically not even using in our examples XD 
+Yep - but that's how the docs have it, and it has a neat extra function called `updateAttributes` which we are ironically not even using in our examples XD
 
 ### Select, Multiselect
 
-Here's the TLDR on how to do select/multiselect from a patch:  
-- 'input' will be `select`/`multiselect`, and 'type' can be anything, but I generally use `text` - `int` works in many cases as well.  
-- 'source' will be `Magento\Eav\Model\Entity\Attribute\Source\Table` unless you have a source class.  
+Here's the TLDR on how to do select/multiselect from a patch:
+- 'input' will be `select`/`multiselect`, and 'type' can be anything, but I generally use `text` - `int` works in many cases as well.
+- 'source' will be `Magento\Eav\Model\Entity\Attribute\Source\Table` unless you have a source class.
 - For multiselect- 'backend' will be `Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend` unless you have special requirements there
 - 'user_defined' should be `true` and 'system' should be `false` if you want to be able to change/delete the attribute and it's values from the admin
 - Option values for each are written the same way
   - For Simple arrays:
-  - ~~~php 
+  - ~~~php
     'option' => [ 'values' =>
         [
         'Option 1',
@@ -180,7 +180,7 @@ Here's the TLDR on how to do select/multiselect from a patch:
     ],
     ~~~
   - For Scoped (per store view) arrays: ***notice values is now value***
-  - ~~~php 
+  - ~~~php
     'option' => [ 'value' =>
         [
             'option1'=>[
@@ -204,11 +204,11 @@ Here's the TLDR on how to do select/multiselect from a patch:
 
 ----
 ## CMS blocks and pages
-See the examples in the [repository](https://github.com/Bwilliamson55/PatchExamples) for a full example.  
+See the examples in the [repository](https://github.com/Bwilliamson55/PatchExamples) for a full example.
 
-Pages and Blocks work a little differently from each other. In both cases though, I find it easiest to build your CMS data by hand, then go pull the value of the column `content` from the `cms_block` or `cms_page` tables.  
+Pages and Blocks work a little differently from each other. In both cases though, I find it easiest to build your CMS data by hand, then go pull the value of the column `content` from the `cms_block` or `cms_page` tables.
 
-**Blocks** will accept 
+**Blocks** will accept
 ```php
 [
     'title' => 'CMS block title 2',
@@ -219,7 +219,7 @@ Pages and Blocks work a little differently from each other. In both cases though
     'sort_order' => 0
 ]
 ```
-Inject `Magento\Cms\Model\BlockFactory` and save the block with  
+Inject `Magento\Cms\Model\BlockFactory` and save the block with
 ```php
 $this->blockFactory->create()->setData($blockData)->save(); // $blockData is the array above
 ```
@@ -248,7 +248,7 @@ $this->pageFactory->create()->setData($pageData)->save(); // $pageData is the ar
 ```
 ---
 ## Admin configurations
-This is easier than most - inject `Magento\Framework\App\Config\Storage\WriterInterface` and store your config settings like so  
+This is easier than most - inject `Magento\Framework\App\Config\Storage\WriterInterface` and store your config settings like so
 ```php
 $this->configWriter->save(
     $path, // such as web/secure/base_url
@@ -257,17 +257,17 @@ $this->configWriter->save(
     self::CONFIG_SCOPE_ID // The ID related to the scope - website ID or store ID or 0 for default
 );
 ```
-I find this easiest to pull these values right from the DB after I've clicked my way to the config I want. You can sort the `core_config_data` table by its `updated_at` column, or `id` desc and presto.   
+I find this easiest to pull these values right from the DB after I've clicked my way to the config I want. You can sort the `core_config_data` table by its `updated_at` column, or `id` desc and presto.
 
-The only gotcha here is when your IDs change across environments. In that case I hope your text codes are consistent so you can retreive your IDs via the code before saving this. 
+The only gotcha here is when your IDs change across environments. In that case I hope your text codes are consistent so you can retreive your IDs via the code before saving this.
 
 ----
 ## Theme config/assignment
-Once you have your theme files in place, you can update its configuration with a patch  
+Once you have your theme files in place, you can update its configuration with a patch
 
-Inject `Magento\Theme\Model\Data\Design\ConfigFactory` and `Magento\Theme\Model\DesignConfigRepository`. If you already know your Theme ID great, otherwise inject `Magento\Theme\Model\ResourceModel\Theme\CollectionFactory` too.   
+Inject `Magento\Theme\Model\Data\Design\ConfigFactory` and `Magento\Theme\Model\DesignConfigRepository`. If you already know your Theme ID great, otherwise inject `Magento\Theme\Model\ResourceModel\Theme\CollectionFactory` too.
 
-Build the config, then save it:  
+Build the config, then save it:
 ```php
 // Get the theme ID
 $themeCollection = $this->themeCollectionFactory->create();
@@ -281,7 +281,7 @@ $data = [
 $designConfigData = $this->themeConfigFactory->create(
     self::CONFIG_SCOPE_TYPE, // can be 'websites', 'stores', 'default'
     $websiteId, // ID of the scope type- so, websiteId or storeId or 0
-    $data 
+    $data
 );
 $this->designConfigRepository->save($designConfigData);
 ```

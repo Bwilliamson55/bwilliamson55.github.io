@@ -2,7 +2,7 @@
 title: Xdebug 3 and Magento 2
 date: 2021-09-09 13:20
 categories: [Magento, Dev]
-author: Bwilliamson
+author: bwilliamson
 tags: [magento, OSX, linux, xdebug, phpstorm, IDE, debug]
 ---
 
@@ -23,10 +23,10 @@ https://php.watch/articles/xdebug2-vs-3-benchmark?r), and the configuration is m
 
 Take a look at the performance article linked above, and the [official docs on upgrading from version 2 to 3](
 https://xdebug.org/docs/upgrade_guide
-) for extra detail. 
+) for extra detail.
 
 ### xdebug.mode
-Instead of having a handful of configuration settings for each use case - most settings have been condensed into a single setting called `xdebug.mode`. This is an excellent addition because configurations like this: 
+Instead of having a handful of configuration settings for each use case - most settings have been condensed into a single setting called `xdebug.mode`. This is an excellent addition because configurations like this:
 ~~~
 xdebug.remote_enable=1
 xdebug.default_enable=0
@@ -34,22 +34,22 @@ xdebug.profiler_enable=0
 xdebug.auto_trace=0
 xdebug.coverage_enable=0
 ~~~
-Now look like this: 
+Now look like this:
 ~~~
 xdebug.mode=debug
 ~~~
 
-Nice right? There are a handful of other modes as well, but we'll most likely be using `debug` or `off`. Setting the mode to `off` will disable all Xdebug features, reducing its performance impact to nearly nothing. 
+Nice right? There are a handful of other modes as well, but we'll most likely be using `debug` or `off`. Setting the mode to `off` will disable all Xdebug features, reducing its performance impact to nearly nothing.
 
 ### xdebug.start_with_request
 This is a really neat feature in Xdebug 3.
 
-If we set this to `yes` then Xdebug is always running. 
-A better option is to set this to `trigger`. Then, certain xdebug values passed with the request will trigger Xdebug to run, instead of it running all the time.  
-`start_with_request=trigger` looks at `xdebug.trigger_value` for the trigger value. This defaults to "", which will accept ***ANY*** value in the `XDEBUG_TRIGGER` header or environment variables. 
+If we set this to `yes` then Xdebug is always running.
+A better option is to set this to `trigger`. Then, certain xdebug values passed with the request will trigger Xdebug to run, instead of it running all the time.
+`start_with_request=trigger` looks at `xdebug.trigger_value` for the trigger value. This defaults to "", which will accept ***ANY*** value in the `XDEBUG_TRIGGER` header or environment variables.
 
 Now this is a bit confusing because a lot of tutorials out there don't follow this, and you never see `XDEBUG_TRIGGER` used. *Why is that..*.
-Xdebug ***also*** accepts the following legacy names for their types instead of `XDEBUG_TRIGGER`: 
+Xdebug ***also*** accepts the following legacy names for their types instead of `XDEBUG_TRIGGER`:
 ~~~
 XDEBUG_SESSION == Step Debugging
 XDEBUG_PROFILE == Profiling
@@ -102,7 +102,7 @@ xdebug.client_port=9003 # 9003 is the new default port. This setting is optional
 
 # Installing Xdebug 3
 
-Installing Xdebug is pretty trivial. There are a few requirements though: 
+Installing Xdebug is pretty trivial. There are a few requirements though:
 - For OSX:
     - Must have PHP installed via [Homebrew](https://formulae.brew.sh/formula/php)
 - For Linux:
@@ -113,20 +113,20 @@ Installing Xdebug is pretty trivial. There are a few requirements though:
 ~~~bash
 pecl install xdebug
 ~~~
-Run `php -v` to confirm Xdebug is installed.   
+Run `php -v` to confirm Xdebug is installed.
 
-> ***Note:*** I have seen OSX with Homebrew throw an error here about directories not existing when installing this way. If this happens to you, simply create those directories and try again. Normally it's due to a symlink being expanded incorrectly - e.g. `/usr/local/Cellar/php@7.4/7.4.20/pecl/` is actually a symlink. 
+> ***Note:*** I have seen OSX with Homebrew throw an error here about directories not existing when installing this way. If this happens to you, simply create those directories and try again. Normally it's due to a symlink being expanded incorrectly - e.g. `/usr/local/Cellar/php@7.4/7.4.20/pecl/` is actually a symlink.
 
 ## Linux
 
 ~~~bash
 sudo apt-get install php-xdebug
 ~~~
-In some distributions you'll need to use `yum` instead, and/or call out the specific PHP version like: 
+In some distributions you'll need to use `yum` instead, and/or call out the specific PHP version like:
 ~~~bash
 sudo apt-get install php7.4-xdebug
 ~~~
-Run `php -v` to confirm Xdebug is installed. 
+Run `php -v` to confirm Xdebug is installed.
 
 # Configuration
 Whether you're on Linux or OSX, you can find where PHP is scanning for ini files with:
@@ -143,13 +143,13 @@ Scan for additional .ini files in: /usr/local/etc/php/7.4/conf.d
 /usr/local/etc/php/7.4/conf.d/php-memory-limits.ini
 ~~~
 
-***Important:***  
+***Important:***
 Add `zend_extension=xdebug` to the end of your primary php.ini file.
 
-For the Xdebug ini, if we see an existing one in the list above- we can modify that one. Otherwise let's create one in a directory we know is scanned. 
+For the Xdebug ini, if we see an existing one in the list above- we can modify that one. Otherwise let's create one in a directory we know is scanned.
 In this example we can create an ini in `/usr/local/etc/php/7.4/conf.d` and call it `20-xdebug.ini`.
 
-The file contents: 
+The file contents:
 ~~~
 xdebug.mode=debug
 xdebug.client_host=localhost
@@ -157,14 +157,14 @@ xdebug.start_with_request=trigger
 xdebug.idekey=phpstorm
 ~~~
 
-**That's it?** 
-Yea, basically. We can add more settings to this configuration if our situation requires it. Refer the the TLDR for some commonly used settings, or the official docs for more. 
+**That's it?**
+Yea, basically. We can add more settings to this configuration if our situation requires it. Refer the the TLDR for some commonly used settings, or the official docs for more.
 
-Restart php for your environment to grab the changes.  
-If we're using valet on OSX then `valet restart`,  
+Restart php for your environment to grab the changes.
+If we're using valet on OSX then `valet restart`,
 If we're using Linux then most likely `/etc/init.d/php-fpm restart`
 
-Run `php --ini` again and behold: 
+Run `php --ini` again and behold:
 ~~~bash
 Configuration File (php.ini) Path: /usr/local/etc/php/7.4
 Loaded Configuration File:        /usr/local/etc/php/7.4/php.ini
@@ -176,7 +176,7 @@ Additional .ini files parsed:      /usr/local/etc/php/7.4/conf.d/20-xdebug.ini,
 ~~~
 
 ## PhpStorm Configuration
-Open your preferences, and search for `PHP`. It will generally be under `Languages & Frameworks`. 
+Open your preferences, and search for `PHP`. It will generally be under `Languages & Frameworks`.
 
 If you don't see a CLI interpreter, click the `...` beside the field and [create one from your local PHP installation](https://www.jetbrains.com/help/phpstorm/configuring-local-interpreter.html).
 
@@ -186,14 +186,14 @@ By Clicking the `...` we can see if we have a debugger installed properly:
 
 ![02](/assets/img/post images/magento/xdebug/02.png){: .normal }
 
-Click on `Debug` under the `PHP` menu in your preferences, 
-Enter your `xdebug.client_port` value in the `Debug port:` field. Default is 9003 for xdebug, but this field accepts multiple values if you like- just comma separate them (`9000,9003`). 
+Click on `Debug` under the `PHP` menu in your preferences,
+Enter your `xdebug.client_port` value in the `Debug port:` field. Default is 9003 for xdebug, but this field accepts multiple values if you like- just comma separate them (`9000,9003`).
 
-Check the `Can accept external connections` checkbox. 
+Check the `Can accept external connections` checkbox.
 
-Checking the `Force break at first line when no path mapping specified` checkbox is a good idea- this will cause the debugger to stop on any files outside of your servers set in the `Servers` tab, while it's running. 
+Checking the `Force break at first line when no path mapping specified` checkbox is a good idea- this will cause the debugger to stop on any files outside of your servers set in the `Servers` tab, while it's running.
 
-Checking the `Force break at first line when a script is outside the project` can be helpful sometimes, but will become annoying quickly if you don't need that. 
+Checking the `Force break at first line when a script is outside the project` can be helpful sometimes, but will become annoying quickly if you don't need that.
 
 In the `External Connections` section - Set your max simultaneous connections, and take note of the option `Break at first line in PHP scripts`. This option can also be enabled via the `main menu -> Run -> Break at first line in PHP scripts`
 
@@ -206,31 +206,31 @@ There are a TON of great helper features in Xdebug 3. [Too many to cover here](h
 
 To easily trigger Xdebug via your browser, grab the helper extension for your browser of choice.
 
-[Xdebug Helper for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/xdebug-helper-for-firefox/) [(source)](https://github.com/BrianGilbert/xdebug-helper-for-firefox).   
-[Xdebug Helper for Chrome](https://chrome.google.com/extensions/detail/eadndfjplgieldjbigjakmdgkmoaaaoc) [(source)](https://github.com/mac-cain13/xdebug-helper-for-chrome).   
-[XDebugToggle for Safari](https://apps.apple.com/app/safari-xdebug-toggle/id1437227804?mt=12) [(source)](https://github.com/kampfq/SafariXDebugToggle). 
+[Xdebug Helper for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/xdebug-helper-for-firefox/) [(source)](https://github.com/BrianGilbert/xdebug-helper-for-firefox).
+[Xdebug Helper for Chrome](https://chrome.google.com/extensions/detail/eadndfjplgieldjbigjakmdgkmoaaaoc) [(source)](https://github.com/mac-cain13/xdebug-helper-for-chrome).
+[XDebugToggle for Safari](https://apps.apple.com/app/safari-xdebug-toggle/id1437227804?mt=12) [(source)](https://github.com/kampfq/SafariXDebugToggle).
 
 Each extension adds an icon to your browser where you can select which functionality you want to trigger. Xdebug will start debugging for every request as long as the debug toggle has been enabled. The settings of the extension generally include fields for your trigger and/or IDE key values.
 
 # Using Xdebug in PhpStorm
-Once configured, you can begin using your browser extension or CLI trigger in combination with toggling the debug icon:   
-Off: ![04](/assets/img/post images/magento/xdebug/04.png){: .normal } On: ![05](/assets/img/post images/magento/xdebug/05.png){: .normal }  
+Once configured, you can begin using your browser extension or CLI trigger in combination with toggling the debug icon:
+Off: ![04](/assets/img/post images/magento/xdebug/04.png){: .normal } On: ![05](/assets/img/post images/magento/xdebug/05.png){: .normal }
 
-Now PhpStorm is listening for Xdebug connections.  
+Now PhpStorm is listening for Xdebug connections.
 
 ## Setting [breakpoints](https://www.jetbrains.com/help/phpstorm/using-breakpoints.html)
-Open your desired PHP file from your project, and left click in the gutter - the red circle is your breakpoint. This is where Xdebug will pause the execution in PhpStorm, and let you take control. 
+Open your desired PHP file from your project, and left click in the gutter - the red circle is your breakpoint. This is where Xdebug will pause the execution in PhpStorm, and let you take control.
 
 You can right click the break points to enable/disable them and set conditionals - more on that in a bit.
 
 ![06](/assets/img/post images/magento/xdebug/06.png){: .normal }
 
 ## So many buttons
-So you hit a breakpoint. Now what? 
+So you hit a breakpoint. Now what?
 
 ![07](/assets/img/post images/magento/xdebug/07.png){: .normal }
 
-It's time to [Step through the program](https://www.jetbrains.com/help/phpstorm/stepping-through-the-program.html). 
+It's time to [Step through the program](https://www.jetbrains.com/help/phpstorm/stepping-through-the-program.html).
 Your step options are
 ![08](/assets/img/post images/magento/xdebug/08.png){: .normal }
 
@@ -249,30 +249,30 @@ Your step options are
 
 ### Break on script start
 
-> Don't forget about `Run->Break at first line in PHP scripts`. 
-> This option will help when you can't find the correct files to set break points on. 
+> Don't forget about `Run->Break at first line in PHP scripts`.
+> This option will help when you can't find the correct files to set break points on.
 <!-- > It may take you a while to get where you want to be, but you can follow the execution from go. -->
 
 ![10](/assets/img/post images/magento/xdebug/10.png){: .normal }
 
 ### Contitional Break Points
-This is a very awesome feature. We can set up break points to only break when a certain value is passed through. This saves us a lot of time when we are debugging loops. To continue with the above code examples, this is the Magento 2 Theme regestration when you run `setup:upgrade`, and I've set it to only break when the Luma theme is passing by: 
+This is a very awesome feature. We can set up break points to only break when a certain value is passed through. This saves us a lot of time when we are debugging loops. To continue with the above code examples, this is the Magento 2 Theme regestration when you run `setup:upgrade`, and I've set it to only break when the Luma theme is passing by:
 
 ![11](/assets/img/post images/magento/xdebug/11.png){: .normal }
 
 ## Evaluate Expression
-In a similar and often more useful way than conditional break points, we can evaluate code on the fly. 
+In a similar and often more useful way than conditional break points, we can evaluate code on the fly.
 
 Once a break point is triggered, we can right click anywhere in the code and select `Evaluate Expression` or press `Option+F8`
 
 ![12](/assets/img/post images/magento/xdebug/12.png){: .normal }
 
-From here we can test out methods in real time, and even see suggested methods based on where we are in the code! 
+From here we can test out methods in real time, and even see suggested methods based on where we are in the code!
 
 ![13](/assets/img/post images/magento/xdebug/13.png){: .normal }
 ![14](/assets/img/post images/magento/xdebug/14.png){: .normal }
 
 # Conclusion
 
-Xdebug 3 is great; Not that hard to install or configure, and you should be using it if you work with PHP. 
+Xdebug 3 is great; Not that hard to install or configure, and you should be using it if you work with PHP.
 I do not miss `var_dump()`.

@@ -2,14 +2,14 @@
 title: Magento 2 Time Savers
 date: 2021-08-20 07:44
 categories: [Magento]
-author: Bwilliamson
+author: bwilliamson
 tags: [bash, magento, mysql, elasticsearch]
 ---
 
 # We all get tired of WET coding (Writing everything twice).
 
 Here are some excerpts from my ***`~/.zshrc`*** which save me a lot of time.
-These are specific to Magento development via CLI, mostly. 
+These are specific to Magento development via CLI, mostly.
 
 ## General
 
@@ -18,7 +18,7 @@ Extract a tar to a specific directory-
 #e.g. restore-tar ~/tarname.tar.gz ~/myExtractedFolder
 function restore-tar() {
     filename=${1:?"The file path must be specified."}
-    directory=${2:?"The destination folder must be specified."}   
+    directory=${2:?"The destination folder must be specified."}
     tar -xzvf $filename -C $directory
 }
 ```
@@ -39,7 +39,7 @@ alias mysqldump-magento="mysqldump ${PROJECT_NAME} -u root -p -h 127.0.0.1 | gzi
 #for OSX use gzcat, it uses the same arguments.
 function restore-db() {
     dbfile=${1:?"The path must be specified."}
-    dbname=${2:?"The destination db name must be specified."}   
+    dbname=${2:?"The destination db name must be specified."}
     zcat $dbfile | mysql -h 127.0.0.1 -u root -p $dbname
 }
 ```

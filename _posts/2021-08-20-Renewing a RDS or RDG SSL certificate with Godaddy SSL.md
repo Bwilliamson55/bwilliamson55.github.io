@@ -2,15 +2,15 @@
 title: Renewing a RDS/RDG SSL certificate with Godaddy SSL
 date: 2021-08-20 10:45
 categories: [Sysadmin]
-author: Bwilliamson
+author: bwilliamson
 tags: [powershell, sysadmin, RDS, RDG, SSL, windows server]
 ---
 
 This is a quick walkthrough on how to do this. This was written for Windows server 2012R2, but should still be applicable to 2016 and 2019 as well. This is specifically for an RDG (Remote Desktop Gateway) server. Your on-prem *RDS* server may or may not contain this role, so keep that in mind.
 
-As of this writing the way to get your cert, assuming you're using Godaddy, is to go here:  
+As of this writing the way to get your cert, assuming you're using Godaddy, is to go here:
 
-https://certs.godaddy.com/cert  
+https://certs.godaddy.com/cert
 
 - Click on the cert you want to download
 - Check the expiration date and be sure it's valid
@@ -42,13 +42,13 @@ https://certs.godaddy.com/cert
       - ![Remote Desktop Services Control Panel](/assets/img/post images/sysadmin/RDS SSL certificates/06.png){: .normal }
   - In the RDGM console tree, right click the local RDG Server, and click Properties
     - ![RDGM tree properties](/assets/img/post images/sysadmin/RDS SSL certificates/07.png){: .normal }
-  
+
   - In the properties, go to the SSL Certificate tab
     - Click "Select an existing certificate from the RD Gateway {Name} Certificates (Local Computer)/Personal store
       - ![SSL certificates tab](/assets/img/post images/sysadmin/RDS SSL certificates/08.png){: .normal }
   - Click "Import Certificate"
   - Select the cert you want to use, and click Import.
-  - Click OK to close the Properties window  
+  - Click OK to close the Properties window
 
 Use an SSL checker to verify that you're all set-  https://ssltools.godaddy.com/views/certChecker
 
