@@ -21,7 +21,12 @@ Finding solutions to problems and curiosities is the most satisfying feeling. Wh
 I plan to leave notes on a lot of topics I find useful and interesting:
 
 
-* Powershell
+* n8n.io
+* Vue 3
+* Quasar
+* Craft CMS
+* GraphQl
+* BI tools and techniques
 * Magento 2 (A lot of this)
 * PHP
 * Web Development
@@ -30,6 +35,7 @@ I plan to leave notes on a lot of topics I find useful and interesting:
 * ETL and Databases
 * Linux
 * General Sysadmin for small to medium business
+* Powershell
 {: .em}
 
 As a secondary objective, this serves as a portfolio.
