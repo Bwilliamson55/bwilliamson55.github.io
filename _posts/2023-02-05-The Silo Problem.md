@@ -1,9 +1,9 @@
 ---
 title: The Silo Problem
 date: 2023-02-05 08:00
-categories: [General, Dev, Sysadmin, devops]
+categories: [General, Dev]
 author: bwilliamson
-tags: [devops, general, silos, projects]
+tags: [devops, general, silos, projects, sysadmin]
 ---
 # What is The silo problem?
 > *The silo problem is a name I'm using for any knowledge or experience based bottlenecks in projects.*

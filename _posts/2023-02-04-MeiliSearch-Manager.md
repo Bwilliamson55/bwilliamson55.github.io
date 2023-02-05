@@ -1,7 +1,7 @@
 ---
 title: MeiliSearch Manager
 date: 2023-02-04 08:00
-categories: [General, Dev, Videos]
+categories: [General, Videos]
 author: bwilliamson
 tags: [update, general, meilisearch, vue, quasar, vite, js]
 ---
