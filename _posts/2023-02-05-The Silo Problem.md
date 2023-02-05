@@ -8,7 +8,8 @@ tags: [devops, general, silos, projects]
 # What is The silo problem?
 > *The silo problem is a name I'm using for any knowledge or experience based bottlenecks in projects.*
 
-    It's all too common these days to be expected to know everything. If you're a nerd, you can fix my email, right? Or my website? No?
+`It's all too common these days to be expected to know everything. If you're a nerd, you can fix my email, right? Or my website? No?`
+
 How many of us dread family encounters for this reason?
 The same idea applies in modern technology stacks. Unless you're one of the people that understands the technology, it's just more acronyms to you. This can be seen in the hilarious examples found about the internet where job postings require more years of experience than the age of the technology in question. This isn't so far from the truth though; When's the last time a skills requirement list had less than five acronyms in it? We are all expected to know a whole lot of stuff!
 
@@ -16,7 +17,8 @@ I love knowing a whole lot of stuff though.
 
 It's why I'm in the development field. Abundant complex problems to itch that drive to create something useful. This notwithstanding, there is limit to what we are capable of.
 
-     Knowledge, skill, and experience are finite resources.
+`Knowledge, skill, and experience are finite resources.`
+
 These resources are called silos because often times they relate to other things in their "vertical" - ie Javascript and Typescript, Powershell and Windows, Bash and Unix. Rarely are these vertical relationships absent of each other. Hence, Silos.
 
 # The problem
@@ -79,6 +81,9 @@ If the product is the same in all three cases,  which do you think would be the 
 # Conclusion
 
 There is no conclusion.
+
 This is an ongoing thought experiment of mine, wherein we can apply almost any project and identify large benefits through silo consolidation.
+
 The driver of silo separation in my experience has been the application of previous or existing projects and infrastructure to new projects or ideas. This is partially due to a fear of change. We can't just switch things! We would need to train people! Or worse, RETRAIN people!
+
 There's no magic bullet of course, but we can do something right now which is to ***consider the silos.***
