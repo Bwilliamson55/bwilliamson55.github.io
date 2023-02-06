@@ -3,7 +3,7 @@ title: The Silo Problem
 date: 2023-02-05 08:00
 categories: [General, Dev]
 author: bwilliamson
-tags: [devops, general, silos, projects, sysadmin]
+tags: [devops, general, silos, projects, sysadmin, videos, metabase, n8n]
 ---
 # What is The silo problem?
 > *The silo problem is a name I'm using for any knowledge or experience based bottlenecks in projects.*
@@ -87,3 +87,9 @@ This is an ongoing thought experiment of mine, wherein we can apply almost any p
 The driver of silo separation in my experience has been the application of previous or existing projects and infrastructure to new projects or ideas. This is partially due to a fear of change. We can't just switch things! We would need to train people! Or worse, RETRAIN people!
 
 There's no magic bullet of course, but we can do something right now which is to ***consider the silos.***
+
+# Epilogue
+
+Here's my "Crazy Charlie" video that I recoreded a while back to try to illustrate this with word relations:
+
+<div style="position: relative; padding-bottom: 5%; height: 30vh;"><iframe src="https://www.loom.com/embed/5603fb3e356d4a478aac0b4ef34c3130" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
