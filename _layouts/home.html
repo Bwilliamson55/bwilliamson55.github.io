@@ -48,6 +48,11 @@ layout: page
     </h1>
 
     <div class="post-content">
+      {% if post.thumb %}
+      <div class="row">
+        <img src="{{post.thumb}}" alt="{{ post.title }} listing image" class="mx-auto" style="max-height: 250px;"/>
+      </div>
+      {% endif %}
       <p>
         {% include no-linenos.html content=post.content %}
         {{ content | markdownify | strip_html | truncate: 200 | escape }}
