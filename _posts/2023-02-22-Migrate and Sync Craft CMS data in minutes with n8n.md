@@ -30,21 +30,21 @@ Then,
 2. Profit
 
 
-## Plan 1 (Indirect)
+# Plan 1 (Indirect)
 ---
 
 
 Go to your source environment, and go to the GraphiQl explorer (YourDomain/admin/graphiql).
 From here- use the 'explorer' to find the data you're after.
 
-### A little about the GraphiQL explorer
+## A little about the GraphiQL explorer
 
 
 Linkie - [https://craftcms.com/docs/4.x/graphql.html#using-the-graphiql-ide](https://craftcms.com/docs/4.x/graphql.html#using-the-graphiql-ide)
 
 I'm sure you're capable of reading the docs on this, but I'll point out a few things:
 
-#### Explorer side panel
+### Explorer side panel
 
 By clicking the 'Explorer' button we can see our schema options in a click adventure:
 
@@ -65,7 +65,7 @@ For example, here's a query with a few common filters and return values for our 
 
 You can create what's shown here with just clicking in the Explorer panel, followed by clicking the play button.
 
-#### Query panel
+### Query panel
 
 You can also just start typing in the query panel, inside a valid `query` or `mutation`, and it will do a lot of work for you. For instance, `CTRL+Space` or `CMD+Space` gives you auto-complete options:
 
@@ -79,7 +79,7 @@ If you enter something that's invalid, it generally just doesn't show up in the 
 Refer to the documentation for more information and guidance: https://craftcms.com/docs/4.x/graphql.html#getting-started
 
 
-### Get this data into n8n
+## Get this data into n8n
 
 Plan 1, which is what I did at work recently in a pinch, is to simply copy the resulting `JSON` into n8n.
 
@@ -100,7 +100,7 @@ Copy the raw output from your GraphiQL results, and modify the code node to retu
 
 Now let's hook this up to a webhook for processing elsewhere.
 
-### Webhook configuration
+## Webhook configuration
 
 ![09](/assets/img/post%20images/etl/n8n/20230222/09-n8n.png){: .normal }
 
@@ -209,7 +209,7 @@ Ok great now we have a feed!
 
 ![11](/assets/img/post%20images/etl/n8n/20230222/11-n8n.png){: .normal }
 
-### Test it before moving on
+## Test it before moving on
 
 Go to the webhook node, and click on the test url to copy it:
 
@@ -244,11 +244,11 @@ Great!
 Save your workflow, and switch over to creating a new feed in feed-me.
 
 
-## Feed me config
+# Feed me config
 
-### Detailed, official instructions: https://docs.craftcms.com/feed-me/v4/guides/importing-entries.html#setup-your-feed
+Detailed, official instructions: [https://docs.craftcms.com/feed-me/v4/guides/importing-entries.html#setup-your-feed](https://docs.craftcms.com/feed-me/v4/guides/importing-entries.html#setup-your-feed)
 
-### Quick version-
+## Quick version-
 - Go to your feed-me panel at yourCraftSite/admin/feed-me/feeds
 - Click New feed
 - For this demo, the configuration looks like this:
@@ -268,7 +268,7 @@ Assuming n8n responds, we move on to mapping the root element:
 ![18](/assets/img/post%20images/etl/n8n/20230222/18-feedme.png){: .normal }
 
 
-> NOTE: I ran into an exception error here because my Feed-Me was a version behind, and the newest version solves an issue with custom sources. See: https://github.com/craftcms/feed-me/pull/1224
+> NOTE: I ran into an exception error here because my Feed-Me was a version behind, and the newest version solves an issue with custom sources. See: [https://github.com/craftcms/feed-me/pull/1224](https://github.com/craftcms/feed-me/pull/1224)
 {: .prompt-warning }
 
 
@@ -291,11 +291,11 @@ Click over to the `"Logs"` tab in the feed-me menu, and review what it's done:
 That's it!!
 
 
-## Plan 2 - Direct from another environment
+# Plan 2 - Direct from another environment
 
 Let's say you're copying/syncing `production` down to other `environments`. In that case we can skip the copy/paste stuff and just ***query Craft directly!***
 
-Follow the docs to make sure your graphql endpoint works and can be reached:  https://craftcms.com/docs/4.x/graphql.html#getting-started
+Follow the docs to make sure your graphql endpoint works and can be reached:  [https://craftcms.com/docs/4.x/graphql.html#getting-started](https://craftcms.com/docs/4.x/graphql.html#getting-started)
 
 Now back in n8n let's add a graphql call to mimic what we'd done in *Plan 1:*
 
