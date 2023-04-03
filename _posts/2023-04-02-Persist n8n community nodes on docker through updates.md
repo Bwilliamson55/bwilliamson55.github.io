@@ -1,6 +1,6 @@
 ---
 title: Persist n8n community nodes on docker through updates
-date: 2023-02-01 16:00
+date: 2023-04-02 16:00
 ategories: [ETL, n8n]
 author: bwilliamson
 tags: [n8n, etl, n8n-nodes]
