@@ -257,11 +257,11 @@ Don't worry- the only thing here we've changed from the official version is that
 
 Go into your app spec, which can be found under your app's "Settings" tab, and replace this part:
 
-![docker hub image spec example](../assets/img/post%20images/etl/n8n/20230403/01-docker_hub_image_spec.png){: .normal }
+![docker hub image spec example](/assets/img/post%20images/etl/n8n/20230403/01-docker_hub_image_spec.png){: .normal }
 
 with this:
 
-![dockerfile spec example](../assets/img/post%20images/etl/n8n/20230403/02-dockerfile_spec.png){ .normal }
+![dockerfile spec example](/assets/img/post%20images/etl/n8n/20230403/02-dockerfile_spec.png){ .normal }
 
 Save. Done.
 Your app will now re-deploy and build the image fresh. Each rebuild will get the newest version without losing the custom nodes.
@@ -270,21 +270,21 @@ Your app will now re-deploy and build the image fresh. Each rebuild will get the
 
 - Create a project
 - Add an app resource
-  - ![Create app resource](../assets/img/post%20images/etl/n8n/20230403/03-create-app.png){: .normal }
+  - ![Create app resource](/assets/img/post%20images/etl/n8n/20230403/03-create-app.png){: .normal }
 - Select github repository as the source - pointing to the dockerfile location
-  - ![Select your github repository](../assets/img/post%20images/etl/n8n/20230403/04-target-dockerfile-location.png){: .normal }
+  - ![Select your github repository](/assets/img/post%20images/etl/n8n/20230403/04-target-dockerfile-location.png){: .normal }
   - This GUI requires you link your github account! Feel free to fork the above repository for your needs.
 - Update plan and other details
   - Update the app's http port ***from 8080 to 5678***
-    - ![Edit app settings for port](../assets/img/post%20images/etl/n8n/20230403/05-edit-app-port.png){: .normal }
-    - ![Edit app port two](../assets/img/post%20images/etl/n8n/20230403/05-edit-app-port-2.png){: .normal }
+    - ![Edit app settings for port](/assets/img/post%20images/etl/n8n/20230403/05-edit-app-port.png){: .normal }
+    - ![Edit app port two](/assets/img/post%20images/etl/n8n/20230403/05-edit-app-port-2.png){: .normal }
   - Edit plan to change pricing
-    - ![Edit app plan](../assets/img/post%20images/etl/n8n/20230403/05-edit-plan-1.png){: .normal }
-    - ![Edit app plan details](../assets/img/post%20images/etl/n8n/20230403/06-edit-plan-2.png){: .normal }
+    - ![Edit app plan](/assets/img/post%20images/etl/n8n/20230403/05-edit-plan-1.png){: .normal }
+    - ![Edit app plan details](/assets/img/post%20images/etl/n8n/20230403/06-edit-plan-2.png){: .normal }
 - Add a DB
-  - ![Add database](../assets/img/post%20images/etl/n8n/20230403/07-add-db.png){: .normal }
+  - ![Add database](/assets/img/post%20images/etl/n8n/20230403/07-add-db.png){: .normal }
 - Create resources - expect the first deploy to fail, we still have a few things to change.
-  - ![Create Resources view](../assets/img/post%20images/etl/n8n/20230403/07-review-create.png){: .normal }
+  - ![Create Resources view](/assets/img/post%20images/etl/n8n/20230403/07-review-create.png){: .normal }
 
 ## Configuration
 
@@ -292,15 +292,15 @@ Under the app settings tab, even while it's deploying, we can update the environ
 
 Going into the DB's settings tab, we can get the required connection information once it's deployed:
 
-![Db settings tab](../assets/img/post%20images/etl/n8n/20230403/08-db-settings.png){: .normal }
+![Db settings tab](/assets/img/post%20images/etl/n8n/20230403/08-db-settings.png){: .normal }
 
-![Db connection details](../assets/img/post%20images/etl/n8n/20230403/09-db-connection-details.png){: .normal }
+![Db connection details](/assets/img/post%20images/etl/n8n/20230403/09-db-connection-details.png){: .normal }
 
 Under the app's settings- click "edit" near "Environment Variables", and then click "bulk edit":
 
-![Edit app env vars](../assets/img/post%20images/etl/n8n/20230403/10-env-vars.png){: .normal }
+![Edit app env vars](/assets/img/post%20images/etl/n8n/20230403/10-env-vars.png){: .normal }
 
-![Env vars bulk editor](../assets/img/post%20images/etl/n8n/20230403/11-env-vars.png){: .normal }
+![Env vars bulk editor](/assets/img/post%20images/etl/n8n/20230403/11-env-vars.png){: .normal }
 
 Edit these so your variables meet the connection details of your database, and the public URL of your app once it deploys the first time:
 
