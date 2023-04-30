@@ -1,5 +1,5 @@
 ---
-title: Persist n8n community nodes on docker through updates
+title: Persist n8n community nodes on docker through updates (UPDATED 04-30)
 date: 2023-04-02 16:00
 ategories: [ETL, n8n]
 author: bwilliamson
@@ -11,6 +11,134 @@ tags: [n8n, etl, n8n-nodes]
 [n8n](https://n8n.io) via an [App service](https://www.digitalocean.com/products/app-platform), using a Docker image, will lose community nodes every rebuild. We can "persist" these custom packages by using a Dockerfile as our App service context rather than the docker image itself.
 
 There is other ways to achieve this, which I'll touch on, but this is what I've implemented and therefore will share.
+
+---
+
+## Update 04/30/23:
+It occurred to me this morning that this post does not cover a simple docker-compose setup like I have in my homelab. I've added the docker-compose file I use to the expandable section just below this for those curious.
+
+TLDR for that is - Put the `DockerFile` and `Entrypoint.sh` in the same directory as your docker-compose file, and swap the `image` property for `build: .`.
+
+ Then run `docker-compose down && docker-compose up --build -d`.
+
+ Or if you want to have less down time, run `docker-compose build` to create the image, THEN do `docker-compose down && docker-compose up --force-recreate -d` - [Source Docs](https://docs.docker.com/compose/compose-file/build/#dockerfile)
+
+
+<details markdown="1">
+  <summary>Copy my Docker-Compose setup from here</summary>
+
+  Private information is redacted of course.
+
+  Tree output of my docker-compose setup. The `bak` and `exports` folders are optional.
+
+  ![tree output of docker-compose directory](/assets/img/post%20images/etl/n8n/20230403/00-docker-compose-tree.png){: .normal }
+
+
+
+  <details markdown="1">
+    <summary>The docker-compose file</summary>
+
+  ```yaml
+  version: '3.8'
+
+volumes:
+  db_storage:
+  n8n_storage:
+
+services:
+  postgres:
+    image: postgres:11
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_NON_ROOT_USER
+      - POSTGRES_NON_ROOT_PASSWORD
+    ports:
+      - 3232:5432
+    volumes:
+      - db_storage:/var/lib/postgresql/data
+      - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 15s
+      retries: 15
+
+  n8n:
+    build: .
+    restart: always
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_BASIC_AUTH_USER
+      - N8N_BASIC_AUTH_PASSWORD
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_EMAIL_MODE=smtp
+      - N8N_SMTP_HOST=smtp.gmail.com
+      - N8N_SMTP_PORT=465
+      - N8N_SMTP_USER=asdf@gmail.com
+      - N8N_SMTP_PASS=asdfasdfasdfasdf
+      - N8N_SMTP_SENDER=asdf@gmail.com
+      - EXECUTIONS_DATA_PRUNE=false
+      - N8N_PAYLOAD_SIZE_MAX=1024
+    ports:
+      - 5688:5678
+    links:
+      - postgres
+    volumes:
+      - n8n_storage:/home/node/
+    command: /bin/sh -c "n8n start"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ```
+  </details>
+  <details markdown="1">
+    <summary>The .env file</summary>
+
+
+  ```bash
+  POSTGRES_USER=root
+  POSTGRES_PASSWORD=SuperSecretSecret
+  POSTGRES_DB=n8n01
+
+  POSTGRES_NON_ROOT_USER=db
+  POSTGRES_NON_ROOT_PASSWORD=db
+
+  N8N_BASIC_AUTH_USER=tehUser
+  N8N_BASIC_AUTH_PASSWORD=yodawgiheardyoulikesecrets
+  # The top level domain to serve from
+  DOMAIN_NAME=somethingsomething.com
+
+  # The subdomain to serve from
+  SUBDOMAIN=n8n
+
+  # Optional timezone to set which gets used by Cron-Node by default
+  # If not set New York time will be used
+  GENERIC_TIMEZONE=America/New_York
+
+  # The email address to use for the SSL certificate creation
+  SSL_EMAIL=mahemail@gmail.com
+  ```
+  </details>
+
+  The `Dockerfile` and `docker-entrypoint.sh` are identical to below
+
+</details>
+
+---
 
 
 <details markdown="1">
