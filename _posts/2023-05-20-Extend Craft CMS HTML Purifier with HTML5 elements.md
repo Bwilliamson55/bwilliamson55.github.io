@@ -51,89 +51,91 @@ use yii\base\Event;
  */
 class Module extends BaseModule
 {
-  public function init(): void
-  {
-    Craft::setAlias('@modules/purifiermodule', __DIR__);
+ public function init(): void
+ {
+  Craft::setAlias('@modules/purifiermodule', __DIR__);
 
-    // Set the controllerNamespace based on whether this is a console or web request
-    if (Craft::$app->request->isConsoleRequest) {
-      $this->controllerNamespace = 'modules\\purifiermodule\\console\\controllers';
-    } else {
-      $this->controllerNamespace = 'modules\\purifiermodule\\controllers';
-    }
-
-    parent::init();
-
-    // Defer most setup tasks until Craft is fully initialized
-    Craft::$app->onInit(function() {
-      $this->attachEventHandlers();
-    });
+  // Set the controllerNamespace based on whether this is a console or web request
+  if (Craft::$app->request->isConsoleRequest) {
+   $this->controllerNamespace = 'modules\\purifiermodule\\console\\controllers';
+  } else {
+   $this->controllerNamespace = 'modules\\purifiermodule\\controllers';
   }
 
-  private function attachEventHandlers(): void
-  {
-    Event::on(
-    Field::class, // When the craft\redactor\Field class sends the following event
-    Field::EVENT_MODIFY_PURIFIER_CONFIG,
-       static function(ModifyPurifierConfigEvent $event) {
-         if( $def = $event->config->getHTMLDefinition(true) ) {
-    // xemlock/htmlpurifier-html5 library used to assist extending the HTML5 definitions
-    // modifying config/htmlpurifier/Default.json wont cut it for this
-           $mediaContent = new HTMLPurifier_ChildDef_HTML5_Media();
-           $pictureContent = new HTMLPurifier_ChildDef_HTML5_Picture();
-           // https://html.spec.whatwg.org/dev/media.html#the-video-element
-           foreach (['video', 'audio'] as $element) {
-             $def->addElement($element, 'Flow', $mediaContent, 'Common', [
-               'controls' => 'Bool',
-               'height' => 'Length',
-               'poster' => 'URI',
-               'preload' => 'Enum#auto,metadata,none',
-               'src' => 'URI',
-               'width' => 'Length',
-             ]);
-             $def->addElement($element, 'Inline', $mediaContent, 'Common', [
-               'controls' => 'Bool',
-               'height' => 'Length',
-               'poster' => 'URI',
-               'preload' => 'Enum#auto,metadata,none',
-               'src' => 'URI',
-               'width' => 'Length',
-             ]);
-           }
+  parent::init();
 
-           // https://html.spec.whatwg.org/dev/embedded-content.html#the-source-element
-           $def->addElement('source', false, 'Empty', 'Common', [
-             'media' => 'Text',
-             'sizes' => 'Text',
-             'src' => 'URI',
-             'srcset' => 'Text',
-             'type' => 'Text',
-           ]);
+  // Defer most setup tasks until Craft is fully initialized
+  Craft::$app->onInit(function () {
+   $this->attachEventHandlers();
+  });
+ }
 
-           // https://html.spec.whatwg.org/dev/media.html#the-track-element
-           $def->addElement('track', false, 'Empty', 'Common', [
-             'kind' => 'Enum#captions,chapters,descriptions,metadata,subtitles',
-             'src' => 'URI',
-             'srclang' => 'Text',
-             'label' => 'Text',
-             'default' => 'Bool',
-           ]);
+ private function attachEventHandlers(): void
+ {
+  Event::on(
+   Field::class, // When the craft\redactor\Field class sends the following event
+   Field::EVENT_MODIFY_PURIFIER_CONFIG,
+   static function (ModifyPurifierConfigEvent $event) {
+    if ($def = $event->config->getHTMLDefinition(true)) {
+     // xemlock/htmlpurifier-html5 library used to assist extending the HTML5 definitions
+     // modifying config/htmlpurifier/Default.json wont cut it for this
+     $mediaContent = new HTMLPurifier_ChildDef_HTML5_Media();
+     $pictureContent = new HTMLPurifier_ChildDef_HTML5_Picture();
+     // https://html.spec.whatwg.org/dev/media.html#the-video-element
+     foreach (['video', 'audio'] as $element) {
+      $def->addElement($element, 'Flow', $mediaContent, 'Common', [
+       'controls' => 'Bool',
+       'height' => 'Length',
+       'poster' => 'URI',
+       'preload' => 'Enum#auto,metadata,none',
+       'src' => 'URI',
+       'width' => 'Length',
+      ]);
+      $def->addElement($element, 'Inline', $mediaContent, 'Common', [
+       'controls' => 'Bool',
+       'height' => 'Length',
+       'poster' => 'URI',
+       'preload' => 'Enum#auto,metadata,none',
+       'src' => 'URI',
+       'width' => 'Length',
+      ]);
+     }
 
-           // https://html.spec.whatwg.org/dev/embedded-content.html#the-picture-element
-           $def->addElement('picture', 'Flow', $pictureContent, 'Common');
-           $def->addElement('picture', 'Inline', $pictureContent, 'Common');
+     // https://html.spec.whatwg.org/dev/embedded-content.html#the-source-element
+     $def->addElement('source', false, 'Empty', 'Common', [
+      'media' => 'Text',
+      'sizes' => 'Text',
+      'src' => 'URI',
+      'srcset' => 'Text',
+      'type' => 'Text',
+     ]);
 
-           // https://html.spec.whatwg.org/dev/embedded-content.html#the-img-element
-           $img = $def->addBlankElement('img');
-           $img->attr = [
-             'srcset' => 'Text',
-             'sizes' => 'Text',
-           ];
-         }
-       }
-    );
+     // https://html.spec.whatwg.org/dev/media.html#the-track-element
+     $def->addElement('track', false, 'Empty', 'Common', [
+      'kind' => 'Enum#captions,chapters,descriptions,metadata,subtitles',
+      'src' => 'URI',
+      'srclang' => 'Text',
+      'label' => 'Text',
+      'default' => 'Bool',
+     ]);
+
+     // https://html.spec.whatwg.org/dev/embedded-content.html#the-picture-element
+     $def->addElement('picture', 'Flow', $pictureContent, 'Common');
+     $def->addElement('picture', 'Inline', $pictureContent, 'Common');
+
+     // https://html.spec.whatwg.org/dev/embedded-content.html#the-img-element
+     $img = $def->addBlankElement('img');
+     $img->attr = [
+      'srcset' => 'Text',
+      'sizes' => 'Text',
+     ];
+    }
+   }
+  );
  }
 }
+
+
 ```
 </details>
 
@@ -166,16 +168,16 @@ This file is in my project's `/config/htmlpurifier/` folder
 
 ```json
 {
-  "Attr.AllowedFrameTargets": [
-    "_blank", "_target", "*"
-  ],
-  "Attr.EnableID": true,
-  "HTML.Trusted": true,
-  "HTML.AllowedComments": [
-    "pagebreak"
-  ],
-  "HTML.SafeIframe": true,
-  "URI.SafeIframeRegexp": "%^(https?:)?//(www.youtube.com/embed/|player.vimeo.com/video/|forms.clickup.com/|app-cdn.clickup.com/forms-embed/)%"
+ "Attr.AllowedFrameTargets": [
+  "_blank", "_target", "*"
+ ],
+ "Attr.EnableID": true,
+ "HTML.Trusted": true,
+ "HTML.AllowedComments": [
+  "pagebreak"
+ ],
+ "HTML.SafeIframe": true,
+ "URI.SafeIframeRegexp": "%^(https?:)?//(www.youtube.com/embed/|player.vimeo.com/video/|forms.clickup.com/|app-cdn.clickup.com/forms-embed/)%"
 }
 
 ```
