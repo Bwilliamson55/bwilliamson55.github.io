@@ -132,7 +132,7 @@ class Module extends BaseModule
 				 }
 			 }
 		);
-    }
+  }
 }
 ```
 </details>
