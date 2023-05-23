@@ -144,11 +144,11 @@ class Module extends BaseModule
 When working with the very common [Redactor field](https://plugins.craftcms.com/redactor) in Craft CMS, by default, the HTML (if any) put in the field is purified before saving.
 This helps prevent malicious and broken HTML from entering your content, and breaking or compromising your frontend.
 
-## Just diable "Purify HTML" on the field
+## Just disable "Purify HTML" on the field
 Right? ... Right??
 That **would** allow you to put whatever you want in your content and it won't be messed with. The problem here is security (In some cases), but more so for me, allowing broken HTML.
 
-I'm writing this because I had to solve this recently, and simply disabling the purification quickly broke a lot of my pages. Why? Because the content, depending on the site, is syncronized automatically from other systems. This sync does not care if the HTML is bad, and showed me, in the worst way, how easy a simple tag can break a page.
+I'm writing this because I had to solve this recently, and simply disabling the purification quickly broke a lot of my pages. Why? Because the content, depending on the site, is synchronized automatically from other systems. This sync does not care if the HTML is bad, and showed me, in the worst way, how easy a simple tag can break a page.
 
 eg `<div class="class-1 class2>`
 
