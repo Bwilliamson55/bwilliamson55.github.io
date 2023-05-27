@@ -14,10 +14,48 @@ There is other ways to achieve this, which I'll touch on, but this is what I've 
 
 ---
 
+## Update 05/27/23:
+I've simplified my setup even further and need to share!
+
+TLDR is the same as the previous update - Put the `DockerFile` and `docker-entrypoint` in the same directory as your docker-compose file, and swap the `image` property for `build: .`
+
+ Then run `docker-compose down && docker-compose up --build -d`.
+
+ Or if you want to have less down time, run `docker-compose build` to create the image, THEN do `docker-compose down && docker-compose up --force-recreate -d` - [Source Docs](https://docs.docker.com/compose/compose-file/build/#dockerfile)
+
+ If you're on Digital Ocean or similar, "Force rebuild and redeploy".
+
+`Dockerfile`:
+    ***Note the `-g` - these nodes will not show in 'community nodes' but will work and show when searched for***
+```yaml
+FROM n8nio/n8n:latest
+RUN npm install -g n8n-nodes-clickuplookup && npm install -g n8n-nodes-meilisearch
+```
+`docker-entrypoint.sh`:  (Default one from n8n repo)
+```shell
+#!/bin/sh
+
+if [ -d /root/.n8n ] ; then
+  chmod o+rx /root
+  chown -R node /root/.n8n
+  ln -s /root/.n8n /home/node/
+fi
+
+chown -R node /home/node
+
+if [ "$#" -gt 0 ]; then
+  # Got started with arguments
+  exec su-exec node "$@"
+else
+  # Got started without arguments
+  exec su-exec node n8n
+fi
+```
+
 ## Update 04/30/23:
 It occurred to me this morning that this post does not cover a simple docker-compose setup like I have in my homelab. I've added the docker-compose file I use to the expandable section just below this for those curious.
 
-TLDR for that is - Put the `DockerFile` and `Entrypoint.sh` in the same directory as your docker-compose file, and swap the `image` property for `build: .`.
+TLDR for that is - Put the `DockerFile` and `docker-entrypoint` in the same directory as your docker-compose file, and swap the `image` property for `build: .`.
 
  Then run `docker-compose down && docker-compose up --build -d`.
 
