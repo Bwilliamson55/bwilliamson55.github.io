@@ -20,10 +20,10 @@ timezone: America/New_York
 
 title: Bwilliamson's Blog                          # the main title
 
-tagline: More Dude, less Walter   # it will display as the sub-title
+tagline: There's an API for that   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Ramblings of a developer/sysadmin in blog form.
+  Ramblings of a full stack developer/sysadmin in blog form.
   Notes and tutorials for reference,
   Projects for fun and growth.
 
