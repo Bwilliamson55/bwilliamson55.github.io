@@ -532,7 +532,7 @@ Those are important to fully understand what can be set, and what the defaults a
 
 </details>
 
-> There are other apps out there I'm sure, but I ended up making a little Vue app to manage Meilisearch instances. Feel free to use it or fork it or what not - [Meili-Manager.vercel.app](Meili-Manager.vercel.app)
+> There are other apps out there I'm sure, but I ended up making a little Vue app to manage Meilisearch instances. Feel free to use it or fork it or what not - [Meili-Manager.vercel.app](https://Meili-Manager.vercel.app)
 
 > Normally, you wouldn't set "*" for Displayed Attributes. Those are the attributes returned with every api call, so the less the better.
 
