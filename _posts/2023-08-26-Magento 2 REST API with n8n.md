@@ -7,6 +7,12 @@ tags: [n8n, etl, api, magento]
 ---
 The generic HTTP node, M2 API authentication, and some tips.
 
+<details markdown="1">
+  <summary><span style="font-size: 1.6rem;">Table of Contents</span></summary>
+* TOC
+{:toc}
+</details>
+
 # Overview
 This is a quick overview of how to use the [n8n](https://n8n.io/) HTTP node to connect to the [Magento 2](https://magento.com/) REST API. I'm using the [Magento 2 REST API](https://developer.adobe.com/commerce/webapi/rest/quick-reference/), but there is also GraphQL and any custom endpoints you may create that you could also utilize.
 
